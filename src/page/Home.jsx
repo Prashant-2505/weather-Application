@@ -5,13 +5,14 @@ const Home = () => {
     const [cityName, setCityName] = useState('delhi');
     const [weatherData, setWeatherData] = useState({})
     const [loading, setLoading] = useState(false)
+    
     const getWeather = async () => {
         try {
             setLoading(true)
             const response = await axios.get(`https://open-weather13.p.rapidapi.com/city/${cityName}/EN`, {
                 headers: {
-                    'X-RapidAPI-Key': 'c2463bcfe3msha791d79ecb32aa8p1a26a8jsn70fcb89c9791',
-                    'X-RapidAPI-Host': 'open-weather13.p.rapidapi.com'
+                    'X-RapidAPI-Key': import.meta.env.VITE_API_KEY,
+                    'X-RapidAPI-Host': import.meta.env.VITE_API_HOST
                 }
             });
 
@@ -21,7 +22,7 @@ const Home = () => {
             console.error('Error fetching weather data:', error);
         }
     };
-
+   
     useEffect(()=>{
         getWeather()
     },[])
@@ -52,7 +53,8 @@ const Home = () => {
             </div>
             <div className="min-h-[40vh] w-full px-2 py-10 flex flex-col justify-between items-center border-2">
                 <div className='text-center w-full h-[50%]'>
-                    <h1 className='text-4xl font-bold mb-2'> {weatherData?.main?.temp}&deg;C</h1>
+                <h1 className='text-4xl font-bold mb-2'>{Math.round((weatherData?.main?.temp - 32) * (5 / 9))}&deg;C</h1>
+
                 </div>
                 <div className="w-full h-[50%] flex justify-between px-4">
                     <div>
